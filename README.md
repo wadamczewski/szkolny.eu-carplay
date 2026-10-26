@@ -29,9 +29,10 @@ Aplikacja korzysta z tych samych mechanizmów co oryginał. **Może przestać dz
 Kod źródłowy oryginału pochodzi z lutego 2025 r.
 
 > [!WARNING]
-> **Wersja testowa.** Sprawdzone są: kompilacja logiki (macOS), 50 testów parserów na **fikcyjnych danych**,
-> kodowanie polskich znaków i izolacja sesji uczniów. **Nie są jeszcze sprawdzone:** kompilacja dla iOS,
-> logowanie na prawdziwe konto, zgodność z aktualnym API Librusa, wiadomości i załączniki.
+> **Wersja testowa.** Sprawdzone są: kompilacja dla iOS (Xcode 27.1, symulator iPhone 18 Pro), otwieranie się
+> strony logowania Konta Librus w aplikacji, 50 testów parserów na **fikcyjnych danych**, kodowanie polskich znaków
+> i izolacja sesji uczniów. **Nie są jeszcze sprawdzone:** logowanie na prawdziwe konto, zgodność z aktualnym API
+> Librusa, wiadomości i załączniki.
 
 ## O aplikacji
 

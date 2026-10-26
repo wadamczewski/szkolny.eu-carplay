@@ -11,12 +11,16 @@ struct PortalLoginView: View {
     @State private var isExchanging = false
     @State private var error: String?
     @State private var reloadID = UUID()
+    @State private var isPageLoading = true
 
     var body: some View {
         NavigationStack {
             ZStack {
-                PortalWebView(onCode: handle(code:), onError: { error = $0 })
+                PortalWebView(onCode: handle(code:), onError: { error = $0 }, isLoading: $isPageLoading)
                     .id(reloadID)
+                if isPageLoading && !isExchanging {
+                    ProgressView("Łączenie z portal.librus.pl…")
+                }
                 if isExchanging {
                     ProgressView("Pobieranie kont uczniów…")
                         .padding()
@@ -57,6 +61,7 @@ struct PortalLoginView: View {
 private struct PortalWebView: UIViewRepresentable {
     let onCode: (String) -> Void
     let onError: (String) -> Void
+    @Binding var isLoading: Bool
 
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
@@ -70,16 +75,33 @@ private struct PortalWebView: UIViewRepresentable {
 
     func updateUIView(_ view: WKWebView, context: Context) {}
 
-    func makeCoordinator() -> Coordinator { Coordinator(onCode: onCode, onError: onError) }
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onCode: onCode, onError: onError, onLoading: { isLoading = $0 })
+    }
 
     final class Coordinator: NSObject, WKNavigationDelegate {
         let onCode: (String) -> Void
         let onError: (String) -> Void
+        let onLoading: (Bool) -> Void
         private var finished = false
 
-        init(onCode: @escaping (String) -> Void, onError: @escaping (String) -> Void) {
+        init(onCode: @escaping (String) -> Void, onError: @escaping (String) -> Void,
+             onLoading: @escaping (Bool) -> Void) {
             self.onCode = onCode
             self.onError = onError
+            self.onLoading = onLoading
+        }
+
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            onLoading(true)
+        }
+
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            onLoading(false)
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            onLoading(false)
         }
 
         /// The official app's web view sends this header; the portal may expect it.
@@ -110,6 +132,7 @@ private struct PortalWebView: UIViewRepresentable {
             let failing = (error as NSError).userInfo[NSURLErrorFailingURLStringErrorKey] as? String
             if let failing, let url = URL(string: failing), handleRedirect(url) { return }
             if (error as NSError).code == NSURLErrorCancelled { return }
+            onLoading(false)
             if (error as NSError).domain == "WebKitErrorDomain", (error as NSError).code == 102 { return } // frame load interrupted
             onError(error.localizedDescription)
         }
