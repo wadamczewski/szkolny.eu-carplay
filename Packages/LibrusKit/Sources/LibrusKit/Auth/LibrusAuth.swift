@@ -106,50 +106,6 @@ public enum LibrusAuth {
         }
         return json
     }
-
-    // MARK: Synergia login (password grant)
-
-    public static func synergiaLogin(login: String, password: String, http: HTTPClient) async throws -> Tokens {
-        try await apiToken(http: http, params: [
-            ("grant_type", "password"),
-            ("username", login),
-            ("password", password),
-            ("librus_long_term_token", "1"),
-            ("librus_rules_accepted", "1"),
-        ])
-    }
-
-    public static func synergiaRefresh(_ refreshToken: String, http: HTTPClient) async throws -> Tokens {
-        try await apiToken(http: http, params: [
-            ("grant_type", "refresh_token"),
-            ("refresh_token", refreshToken),
-            ("librus_long_term_token", "1"),
-            ("librus_rules_accepted", "1"),
-        ])
-    }
-
-    private static func apiToken(http: HTTPClient, params: [(String, String)]) async throws -> Tokens {
-        let response = try await http.send(
-            LibrusConstants.apiTokenURL, method: "POST",
-            headers: ["Authorization": "Basic \(LibrusConstants.apiAuthorization)"],
-            form: params
-        )
-        if response.status == 503 { throw LibrusError.maintenance }
-        let json = try response.json()
-        if response.status != 200 {
-            switch json["error"].string {
-            case "invalid_grant": throw LibrusError.invalidLogin
-            case "librus_captcha_needed": throw LibrusError.captchaRequired
-            case let code?: throw LibrusError.api(code: code, message: json["error_description"].string)
-            case nil: throw LibrusError.invalidResponse("HTTP \(response.status)")
-            }
-        }
-        guard let access = json["access_token"].string, let refresh = json["refresh_token"].string else {
-            throw LibrusError.invalidResponse("brak tokenu API")
-        }
-        let expiresIn = json["expires_in"].double ?? 86400
-        return Tokens(accessToken: access, refreshToken: refresh, expiry: Date().addingTimeInterval(expiresIn))
-    }
 }
 
 public struct TimedTokenValue: Sendable {

@@ -55,51 +55,19 @@ public struct Recipient: Hashable, Identifiable, Sendable {
     }
 }
 
-/// The Synergia website session (cookie `DZIENNIKSID`), opened with an `AutoLoginToken`
-/// from the API — port of `LibrusLoginSynergia`. Messages are scraped from the same pages
-/// as `LibrusSynergiaGetMessages` and the maintained librus-apix project.
+/// Synergia website features (messages, attachments). The logged-in session comes from a
+/// `SynergiaSessionProvider`. Pages are scraped like `LibrusSynergiaGetMessages` and the
+/// maintained librus-apix project.
 public actor SynergiaWeb {
-    private let api: LibrusAPI
-    let http = HTTPClient()
-    private var sessionExpiry: Date?
-    private var loginTask: Task<Void, Error>?
+    private let provider: SynergiaSessionProvider
+    var http: HTTPClient { provider.http }
 
-    public init(api: LibrusAPI) {
-        self.api = api
+    public init(provider: SynergiaSessionProvider) {
+        self.provider = provider
     }
-
-    // MARK: Session
 
     public func ensureSession(force: Bool = false) async throws {
-        if !force, let sessionExpiry, sessionExpiry.timeIntervalSinceNow > 60 { return }
-        if let loginTask { return try await loginTask.value }
-        let task = Task { try await self.login() }
-        loginTask = task
-        defer { loginTask = nil }
-        try await task.value
-    }
-
-    private func login() async throws {
-        let json = try await api.get("AutoLoginToken", method: "POST")
-        guard let token = json["Token"].string else {
-            throw LibrusError.synergiaSession("brak tokenu AutoLoginToken")
-        }
-        http.clearCookies()
-        let url = URL(string: LibrusConstants.synergiaTokenLoginURL.replacingOccurrences(of: "TOKEN", with: token)
-                      + "/uczen/widok/centrum_powiadomien")!
-        // Like Android: success only when Synergia redirects to the notification centre.
-        let response = try await http.send(url, followRedirects: false)
-        let location = response.location ?? ""
-        if location.hasSuffix("przerwa_techniczna") || response.text.contains("Przerwa techniczna") {
-            throw LibrusError.maintenance
-        }
-        guard location.contains("centrum_powiadomien") else {
-            throw LibrusError.synergiaSession("token logowania odrzucony (HTTP \(response.status))")
-        }
-        guard http.cookie(named: "DZIENNIKSID", domain: "librus.pl") != nil else {
-            throw LibrusError.synergiaSession("brak ciasteczka sesji")
-        }
-        sessionExpiry = Date().addingTimeInterval(40 * 60)
+        try await provider.ensureLoggedIn(force: force)
     }
 
     /// Cookies for embedding Synergia pages in a web view (fallback UI).

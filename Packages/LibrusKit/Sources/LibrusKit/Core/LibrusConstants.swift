@@ -21,8 +21,11 @@ public enum LibrusConstants {
 
     // Synergia API
     public static let apiURL = "https://api.librus.pl/2.0"
-    public static let apiTokenURL = URL(string: "https://api.librus.pl/OAuth/Token")!
-    public static let apiAuthorization = "Mjg6ODRmZGQzYTg3YjAzZDNlYTZmZmU3NzdiNThiMzMyYjE="
+
+    // Synergia website login (login + password), as in librus-apix
+    public static let apiOAuthURL = "https://api.librus.pl/OAuth"
+    public static let synergiaWebClientID = "46"
+    public static let gatewayAPIURL = "https://synergia.librus.pl/gateway/api/2.0"
 
     // Synergia website (messages, attachments)
     public static let synergiaURL = "https://synergia.librus.pl"

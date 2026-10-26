@@ -3,7 +3,7 @@ import Foundation
 public enum AccountKind: String, Codable, Sendable {
     /// Konto Librus (e-mail) — one portal login gives access to several Synergia accounts.
     case portal
-    /// Direct Synergia login (e.g. `1234567u`) via the API password grant.
+    /// Direct Synergia login (e.g. `1234567u`) via the Synergia website login form.
     case synergia
 }
 
@@ -13,17 +13,19 @@ public struct StoredAccount: Codable, Identifiable, Sendable, Equatable {
     public var kind: AccountKind
     public var displayName: String
     public var portalRefreshToken: String?
-    public var apiRefreshToken: String?
+    /// Only for `.synergia`: Synergia sessions can't be refreshed without logging in again.
+    /// Kept in the Keychain together with the rest of this struct.
+    public var synergiaPassword: String?
     public var profiles: [StudentProfile]
 
     public init(id: UUID = UUID(), kind: AccountKind, displayName: String,
-                portalRefreshToken: String? = nil, apiRefreshToken: String? = nil,
+                portalRefreshToken: String? = nil, synergiaPassword: String? = nil,
                 profiles: [StudentProfile] = []) {
         self.id = id
         self.kind = kind
         self.displayName = displayName
         self.portalRefreshToken = portalRefreshToken
-        self.apiRefreshToken = apiRefreshToken
+        self.synergiaPassword = synergiaPassword
         self.profiles = profiles
     }
 }

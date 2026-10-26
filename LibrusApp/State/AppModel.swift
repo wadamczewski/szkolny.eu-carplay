@@ -53,11 +53,8 @@ final class AppModel {
     }
 
     func synergiaLogin(login: String, password: String) async throws {
-        let (account, tokens) = try await LibrusLogin.synergiaLogin(login: login, password: password)
-        let session = add(account)
-        if let profile = account.profiles.first {
-            await session.seed(portalTokens: nil, apiToken: (profile.login, tokens))
-        }
+        let account = try await LibrusLogin.synergiaLogin(login: login, password: password)
+        _ = add(account)
     }
 
     private func add(_ account: StoredAccount) -> AccountSession {

@@ -14,11 +14,16 @@ public final class StudentClient: @unchecked Sendable {
         self.profile = profile
         self.session = session
         let login = profile.login
-        let api = LibrusAPI(http: HTTPClient()) { force in
-            try await session.apiToken(for: login, forceRefresh: force)
+        if let credentialSession = session.credentialSession {
+            api = LibrusAPI.gateway(session: credentialSession)
+            synergia = SynergiaWeb(provider: credentialSession)
+        } else {
+            let api = LibrusAPI.bearer(http: HTTPClient()) { force in
+                try await session.apiToken(for: login, forceRefresh: force)
+            }
+            self.api = api
+            synergia = SynergiaWeb(provider: AutoLoginSynergiaSession(api: api))
         }
-        self.api = api
-        self.synergia = SynergiaWeb(api: api)
     }
 
     /// Full refresh. Individual sections may fail (e.g. lucky number disabled in a school);

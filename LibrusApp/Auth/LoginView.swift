@@ -62,7 +62,7 @@ struct LoginView: View {
                 } header: {
                     Text("Login i hasło Synergia")
                 } footer: {
-                    Text("Hasło trafia tylko do api.librus.pl i nie jest zapisywane.")
+                    Text("Logowanie przez stronę synergia.librus.pl. Hasło jest zapisywane w pęku kluczy tylko na tym urządzeniu, bo bez niego sesja Synergii nie może być odnowiona.")
                 }
             }
             .navigationTitle(isAddingAccount ? "Dodaj konto" : "")

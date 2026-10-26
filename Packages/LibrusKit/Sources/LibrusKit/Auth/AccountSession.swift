@@ -6,15 +6,21 @@ public actor AccountSession {
     public private(set) var account: StoredAccount
     private let persist: @Sendable (StoredAccount) async -> Void
     let http = HTTPClient()
+    /// For `.synergia` accounts: the website session shared by the API gateway and messages.
+    public nonisolated let credentialSession: CredentialSynergiaSession?
 
     private var portalAccess: TimedTokenValue?
     private var apiTokens: [String: TimedTokenValue] = [:]
     private var portalRefreshTask: Task<String, Error>?
-    private var apiRefreshTask: Task<String, Error>?
 
     public init(account: StoredAccount, persist: @escaping @Sendable (StoredAccount) async -> Void) {
         self.account = account
         self.persist = persist
+        if account.kind == .synergia, let login = account.profiles.first?.login, let password = account.synergiaPassword {
+            credentialSession = CredentialSynergiaSession(login: login, password: password)
+        } else {
+            credentialSession = nil
+        }
     }
 
     /// Synergia API bearer token for one student.
@@ -37,7 +43,8 @@ public actor AccountSession {
                 return fresh.value
             }
         case .synergia:
-            return try await refreshSynergiaToken(login: login)
+            // Synergia login accounts use the gateway API with cookies, not bearer tokens.
+            throw LibrusError.notLoggedIn
         }
     }
 
@@ -80,26 +87,6 @@ public actor AccountSession {
         account.portalRefreshToken = tokens.refreshToken
         await persist(account)
     }
-
-    private func refreshSynergiaToken(login: String) async throws -> String {
-        if let task = apiRefreshTask { return try await task.value }
-        guard let refreshToken = account.apiRefreshToken else { throw LibrusError.notLoggedIn }
-        let http = self.http
-        let task = Task<String, Error> {
-            let tokens = try await LibrusAuth.synergiaRefresh(refreshToken, http: http)
-            await self.storeSynergia(tokens, login: login)
-            return tokens.accessToken
-        }
-        apiRefreshTask = task
-        defer { apiRefreshTask = nil }
-        return try await task.value
-    }
-
-    private func storeSynergia(_ tokens: LibrusAuth.Tokens, login: String) async {
-        apiTokens[login] = TimedTokenValue(value: tokens.accessToken, expiry: tokens.expiry)
-        account.apiRefreshToken = tokens.refreshToken
-        await persist(account)
-    }
 }
 
 // MARK: - First login
@@ -117,24 +104,23 @@ public enum LibrusLogin {
         return (stored, tokens)
     }
 
-    /// Synergia login + password. The password is only sent to Librus here and never stored.
-    public static func synergiaLogin(login: String, password: String) async throws -> (StoredAccount, LibrusAuth.Tokens) {
-        let http = HTTPClient()
-        let tokens = try await LibrusAuth.synergiaLogin(login: login, password: password, http: http)
-        let api = LibrusAPI(http: http) { _ in tokens.accessToken }
-        let me = try await api.get("Me")["Me"]
+    /// Synergia login + password via the website login form. The password is kept (Keychain)
+    /// because Synergia sessions can't be renewed without it.
+    public static func synergiaLogin(login: String, password: String) async throws -> StoredAccount {
+        let session = CredentialSynergiaSession(login: login, password: password)
+        try await session.ensureLoggedIn(force: false)
+        let me = try await LibrusAPI.gateway(session: session).get("Me")["Me"]
         let account = me["Account"]
         let user = me["User"]
         let groupID = account["GroupId"].int ?? 0
         let studentName = [user["FirstName"].string, user["LastName"].string]
             .compactMap { $0 }.joined(separator: " ").fixedName
-        let realLogin = account["Login"].string ?? login
-        var stored = StoredAccount(kind: .synergia, displayName: realLogin, apiRefreshToken: tokens.refreshToken)
+        var stored = StoredAccount(kind: .synergia, displayName: login, synergiaPassword: password)
         stored.profiles = [StudentProfile(
-            accountID: stored.id, login: realLogin,
-            studentName: studentName.isEmpty ? realLogin : studentName,
+            accountID: stored.id, login: login,
+            studentName: studentName.isEmpty ? login : studentName,
             isParent: (5...6).contains(groupID)
         )]
-        return (stored, tokens)
+        return stored
     }
 }

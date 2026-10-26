@@ -43,7 +43,8 @@ Librus Synergia. Jedno Konto Librus może mieć kilka kont uczniowskich i łatwo
 
 - **logowanie przez Konto Librus** (e-mail) na stronie portal.librus.pl. Aplikacja nie widzi hasła, a 2FA i CAPTCHA
   obsługuje sama strona Librusa.
-- logowanie **loginem i hasłem Synergii** (np. `1234567u`). Hasło nie jest zapisywane.
+- logowanie **loginem i hasłem Synergii** (np. `1234567u`) przez formularz synergia.librus.pl. Dane pobierane są
+  przez `synergia.librus.pl/gateway/api`. Hasło jest zapisywane w pęku kluczy, bo bez niego nie da się odnowić sesji.
 - **oceny** ze **średnimi ważonymi**, ocenami przewidywanymi i końcowymi, poprawami, kategoriami i komentarzami
 - **plan lekcji** z nawigacją po tygodniach, odwołanymi lekcjami, zastępstwami i przeniesieniami
 - **terminarz**: sprawdziany, kartkówki i inne wydarzenia
@@ -158,7 +159,9 @@ scripts/build-ipa.sh        niepodpisany .ipa dla AltStore/SideStore
 
 - Logując się przez Konto Librus, wpisujesz dane na stronie portal.librus.pl. Aplikacja odbiera tylko kod autoryzacyjny
   `app://librus?code=…`, tak jak oficjalna aplikacja.
-- Hasło Synergii trafia tylko do api.librus.pl i nie jest zapisywane.
+- Hasło Synergii trafia tylko do api.librus.pl / synergia.librus.pl. Jest zapisywane w pęku kluczy (tylko to urządzenie),
+  bo sesja Synergii wygasa i trzeba się logować ponownie. Librus wyłączył logowanie tokenem
+  (`OAuth/Token` zwraca `unsupported_grant_type`), więc nie da się tego uniknąć. Konto Librus (e-mail) hasła nie zapisuje.
 - Tokeny są w pęku kluczy (Keychain), tylko na tym urządzeniu. Pobrane dane są zapisywane z ochroną plików iOS.
 - Kod aplikacji łączy się wyłącznie z `*.librus.pl`, nie z serwerami Szkolny.eu. Strona logowania w WebView może ładować
   zasoby zewnętrzne, np. Google reCAPTCHA. Przy budowaniu Xcode pobiera z GitHuba bibliotekę SwiftSoup.
