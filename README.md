@@ -11,7 +11,7 @@
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF?style=for-the-badge&logo=swift&logoColor=white)
 ![E-dziennik](https://img.shields.io/badge/e--dziennik-Librus-2EA44F?style=for-the-badge)
 ![Licencja](https://img.shields.io/badge/licencja-GPL--3.0-blue?style=for-the-badge&logo=gnu&logoColor=white)
-![Status](https://img.shields.io/badge/status-wersja%20testowa-yellow?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-beta-yellowgreen?style=for-the-badge)
 
 </div>
 
@@ -28,11 +28,10 @@ do instalacji na własnych urządzeniach, do prywatnego użytku.
 Aplikacja korzysta z tych samych mechanizmów co oryginał. **Może przestać działać** po zmianach po stronie Librusa.
 Kod źródłowy oryginału pochodzi z lutego 2025 r.
 
-> [!WARNING]
-> **Wersja testowa.** Sprawdzone są: kompilacja dla iOS (Xcode 27.1, symulator), **logowanie loginem Synergii
-> i pobieranie danych na prawdziwym koncie** (ekran Start z planem lekcji i terminarzem), otwieranie się strony
-> logowania Konta Librus, 50 testów parserów na fikcyjnych danych. **Nie są jeszcze sprawdzone:** logowanie Kontem
-> Librus do końca, zakładki Oceny, Wiadomości (odczyt, wysyłanie, załączniki), Frekwencja i Uwagi na prawdziwych danych.
+> [!NOTE]
+> **Stan weryfikacji.** Sprawdzone na prawdziwym koncie (symulator, Xcode 27.1): logowanie loginem Synergii, ekran Start,
+> oceny, plan lekcji, wiadomości i zakładka Więcej (terminarz, frekwencja, uwagi, ogłoszenia). **Nie sprawdzone:**
+> logowanie Kontem Librus do końca, wysyłanie wiadomości, instalacja na fizycznym urządzeniu.
 
 ## O aplikacji
 
