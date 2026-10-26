@@ -1,0 +1,1 @@
+{"Types":[{"Id":1,"Name":"nieobecność","Short":"nb","Standard":true,"ColorRGB":"FF0000"},{"Id":100,"Name":"obecność","Short":"ob","Standard":true},{"Id":200,"Name":"zwolniony / obecny","Short":"zw","Standard":false,"StandardType":{"Id":4}}]}

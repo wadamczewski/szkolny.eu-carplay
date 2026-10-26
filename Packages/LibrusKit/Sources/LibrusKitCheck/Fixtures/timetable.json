@@ -1,0 +1,6 @@
+{"Timetable":{
+ "2025-10-06":[[{"LessonNo":"1","HourFrom":"08:00","HourTo":"08:45","Subject":{"Id":10,"Name":"Matematyka"},"Teacher":{"Id":500},"Classroom":{"Id":3},"IsCanceled":false,"IsSubstitutionClass":false}],
+               [{"LessonNo":"2","HourFrom":"08:55","HourTo":"09:40","Subject":{"Id":11,"Name":"Język polski"},"Teacher":{"Id":501},"IsCanceled":true,"IsSubstitutionClass":false}],
+               [{"LessonNo":"3","HourFrom":"09:50","HourTo":"10:35","Subject":{"Id":10,"Name":"Matematyka"},"Teacher":{"Id":500},"IsCanceled":false,"IsSubstitutionClass":true,"OrgDate":"2025-10-06","OrgLessonNo":"3","OrgSubject":{"Id":11},"OrgTeacher":{"Id":501}}]],
+ "2025-10-07":[]
+}}

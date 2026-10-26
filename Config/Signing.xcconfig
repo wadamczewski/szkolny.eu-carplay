@@ -1,0 +1,5 @@
+// Ustawienia podpisu — zmień przed instalacją na telefonie (patrz README.md).
+// DEVELOPMENT_TEAM: Xcode → Settings → Accounts → Twój Apple ID → Team ID (10 znaków).
+DEVELOPMENT_TEAM =
+// Musi być unikalny na świecie (darmowe konto Apple ID odrzuca zajęte identyfikatory).
+BUNDLE_ID_PREFIX = pl.prywatny.dziennik

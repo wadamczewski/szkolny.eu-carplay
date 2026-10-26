@@ -1,0 +1,1 @@
+{"Attendances":[{"Id":"t123","Lesson":{"Id":900},"LessonNo":2,"Date":"2025-10-06","Semester":1,"Type":{"Id":1},"AddedBy":{"Id":500},"AddDate":"2025-10-06 09:00:00"},{"Id":"124","Lesson":{"Id":900},"LessonNo":3,"Date":"2025-10-06","Semester":1,"Type":{"Id":100},"AddDate":"2025-10-06 10:00:00"}]}
