@@ -2,11 +2,12 @@
 
 <img src="LibrusApp/Resources/Assets.xcassets/AppIcon.appiconset/icon.png" height="128px" alt="Ikona aplikacji">
 
-# Dziennik
+# Dziennik z CarPlay
 
-**Nieoficjalny klient Librus Synergia na iOS — port aplikacji [Szkolny.eu](https://github.com/szkolny-eu/szkolny-android)**
+**Nieoficjalny klient Librus Synergia na iOS z widgetami na ekranie CarPlay. Port aplikacji [Szkolny.eu](https://github.com/szkolny-eu/szkolny-android)**
 
 ![Wersja iOS](https://img.shields.io/badge/iOS-17%2B-orange?style=for-the-badge&logo=apple&logoColor=white)
+![CarPlay](https://img.shields.io/badge/CarPlay-iOS%2026%2B-000000?style=for-the-badge&logo=apple&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-5-F05138?style=for-the-badge&logo=swift&logoColor=white)
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF?style=for-the-badge&logo=swift&logoColor=white)
 ![E-dziennik](https://img.shields.io/badge/e--dziennik-Librus-2EA44F?style=for-the-badge)
@@ -28,10 +29,40 @@ do instalacji na własnych urządzeniach, do prywatnego użytku.
 Aplikacja korzysta z tych samych mechanizmów co oryginał. **Może przestać działać** po zmianach po stronie Librusa.
 Kod źródłowy oryginału pochodzi z lutego 2025 r.
 
+To wersja aplikacji [Dziennik na iOS](https://github.com/wadamczewski/szkolny.eu-iOS) rozszerzona o widgety, które
+pokazują się na ekranie samochodu przez CarPlay. Wersje na telewizory: [LG webOS](https://github.com/wadamczewski/szkolny.eu-webos)
+i [Android TV](https://github.com/wadamczewski/szkolny.eu-androidtv).
+
 > [!NOTE]
-> **Stan weryfikacji.** Sprawdzone na prawdziwym koncie (symulator, Xcode 27.1): logowanie loginem Synergii, ekran Start,
-> oceny, plan lekcji, wiadomości i zakładka Więcej (terminarz, frekwencja, uwagi, ogłoszenia). **Nie sprawdzone:**
-> logowanie Kontem Librus do końca, wysyłanie wiadomości, instalacja na fizycznym urządzeniu.
+> **Stan weryfikacji.** Aplikacja (bez widgetów) sprawdzona na prawdziwym koncie w symulatorze (Xcode 27.1): logowanie
+> loginem Synergii, Start, oceny, plan lekcji, wiadomości i zakładka Więcej. Widgety: build w symulatorze, wspólne dane
+> aplikacji i widgetów (App Group), logika na fikcyjnych danych (`scripts/check-widgets.sh`, 10/10) i wygląd w galerii.
+> **Nie sprawdzone:** widgety na prawdziwym ekranie CarPlay (Xcode 27 nie ma już symulatora CarPlay w aplikacji
+> Simulator), instalacja na fizycznym urządzeniu, logowanie Kontem Librus do końca, wysyłanie wiadomości.
+
+## CarPlay
+
+Apple wpuszcza do CarPlay pełne aplikacje tylko z wybranych kategorii (audio, nawigacja, komunikatory przez Siri,
+parkowanie, ładowanie, zamawianie jedzenia, zadania związane z jazdą) i wymaga do tego specjalnego uprawnienia.
+Dziennik szkolny do nich nie pasuje. Od **iOS 26** CarPlay pokazuje jednak **małe widgety** dowolnych aplikacji,
+bez uprawnienia i bez aplikacji CarPlay. Dziennik ma trzy takie widgety:
+
+| Widget | Co pokazuje |
+|---|---|
+| **Następna lekcja** | trwającą („Teraz”) albo najbliższą lekcję: przedmiot, godzinę i salę, zastępstwa i odwołania. Po lekcjach pierwszą lekcję następnego dnia. Zmienia się sam o czasie lekcji. |
+| **Szczęśliwy numerek** | numerek na dziś lub najbliższy dzień |
+| **Terminarz** | najbliższy sprawdzian, kartkówkę lub wydarzenie i ile jest ich jeszcze w tygodniu |
+
+<p align="center"><img src="docs/screenshots/widgety.png" width="720" alt="Widgety Dziennika w jasnym i ciemnym wyglądzie (dane fikcyjne)"></p>
+
+**Jak włączyć:** zainstaluj aplikację, zaloguj się i otwórz ją raz. Na iPhonie z iOS 26+: **Ustawienia → Ogólne →
+CarPlay →** Twoje auto **→ Widgety** i dodaj widgety Dziennika. W aucie widgety są na lewo od ekranu głównego CarPlay
+(przesuń w prawo). Te same widgety dodasz też do ekranu początkowego i trybu StandBy.
+
+**Skąd biorą dane:** widgety nie logują się do Librusa. Aplikacja po każdej synchronizacji zapisuje plan na 7 dni,
+terminarz na 14 dni i numerek we wspólnym kontenerze (App Group), a iOS co jakiś czas odświeża dane w tle. Widgety
+działają też przy zablokowanym telefonie, jeśli od włączenia był choć raz odblokowany. Zawsze pokazują stan z ostatniej
+synchronizacji. Jeśli dawno nie otwierałeś aplikacji, otwórz ją przed jazdą.
 
 ## O aplikacji
 
@@ -54,8 +85,10 @@ Librus Synergia. Jedno Konto Librus może mieć kilka kont uczniowskich i łatwo
 - **obsługa wielu profili** uczniów i wielu kont
 - działanie **offline**: ostatnio pobrane dane są dostępne bez internetu
 - tokeny logowania przechowywane w **pęku kluczy iOS**, tylko na tym urządzeniu
+- **widgety** (następna lekcja, szczęśliwy numerek, terminarz) na ekranie początkowym, w StandBy i w **CarPlay** (iOS 26+)
+- **odświeżanie w tle**, żeby widgety miały aktualne dane
 
-Czego (jeszcze) nie ma, a jest w oryginale: powiadomienia, widgety, synchronizacja w tle, zadania domowe, oceny
+Czego (jeszcze) nie ma, a jest w oryginale: powiadomienia, zadania domowe, oceny
 zachowania, opisowe i punktowe, własne wydarzenia, załączniki w wysyłanych wiadomościach, inne e-dzienniki niż Librus.
 
 ### Zrzuty ekranu
@@ -89,11 +122,14 @@ Gotowych plików do pobrania **nie ma**. Aplikację budujesz sam i instalujesz n
 | [Apple Developer Program](#sposób-2-apple-developer-program) | płatne (99 USD/rok) | 1 rok | kilka urządzeń, bez cotygodniowego odświeżania |
 | [AltStore / SideStore](#sposób-3-altstore--sidestore) | darmowe Apple ID | 7 dni, odświeżane automatycznie | bez Maca na co dzień |
 
-Darmowe Apple ID pozwala mieć najwyżej 3 takie aplikacje na urządzeniu.
+Darmowe Apple ID pozwala mieć najwyżej 3 takie aplikacje na urządzeniu i 10 identyfikatorów aplikacji na tydzień.
+Dziennik z widgetami zajmuje dwa identyfikatory (aplikacja i widgety) oraz jedną grupę aplikacji (App Group).
+Darmowe konto obsługuje grupy aplikacji, a Xcode, AltStore i SideStore rejestrują ją same.
 
 ### Kompilacja
 
-Do zbudowania aplikacji potrzebny jest **Mac z Xcode 16 lub nowszym** (darmowy, z App Store) i urządzenie z **iOS 17+**.
+Do zbudowania aplikacji potrzebny jest **Mac z Xcode 16 lub nowszym** (darmowy, z App Store) i urządzenie z **iOS 17+**
+(widgety w CarPlay: **iOS 26+**).
 Po instalacji Xcode wykonaj jednorazowo:
 
 ```bash
@@ -138,7 +174,8 @@ Powstały `.ipa` zainstalujesz przez Finder (przeciągnij na urządzenie), Apple
 #### Sposób 3: AltStore / SideStore
 
 [AltStore](https://altstore.io) i [SideStore](https://sidestore.io) podpisują aplikację Twoim Apple ID i co tydzień
-odświeżają ją w tle. Zbuduj niepodpisany plik `.ipa`:
+odświeżają ją w tle. Zbuduj plik `.ipa` (podpis ad hoc tylko przenosi uprawnienie App Group, AltStore/SideStore
+podpisują go potem Twoim Apple ID):
 
 ```bash
 ./scripts/build-ipa.sh
@@ -153,6 +190,18 @@ Testy działają na **fikcyjnych, wygenerowanych danych**:
 
 ```bash
 cd Packages/LibrusKit && swift run LibrusKitCheck
+```
+
+Logikę widgetów (następna lekcja, numerek, terminarz, przejścia między dniami) sprawdza osobny test:
+
+```bash
+./scripts/check-widgets.sh
+```
+
+Galeria widgetów w danym momencie (Debug, dane fikcyjne):
+
+```bash
+xcrun simctl launch booted pl.prywatny.dziennik.app -DemoData -WidgetGallery
 ```
 
 Tryb demo z fikcyjnymi danymi (do zrzutów ekranu i pracy nad wyglądem, tylko w wersji Debug): w Xcode
@@ -172,12 +221,17 @@ LibrusApp/                  aplikacja SwiftUI
   App/                      punkt wejścia, zakładki
   Auth/                     logowanie (WebView portalu, login Synergii)
   State/                    AppModel, Keychain, cache
-  Views/                    ekrany: Start, Oceny, Plan, Wiadomości, Więcej
+  Views/                    ekrany: Start, Oceny, Plan, Wiadomości, Więcej (+ galeria widgetów w Debug)
+  State/WidgetBridge.swift  dane dla widgetów po każdej synchronizacji
+Shared/                     wspólne dla aplikacji i widgetów: WidgetSnapshot (App Group), widoki widgetów
+Widgets/                    rozszerzenie WidgetKit: 3 małe widgety (ekran początkowy, StandBy, CarPlay)
+WidgetsCheck/               test logiki widgetów na fikcyjnych danych
 Packages/LibrusKit/         logika niezależna od UI
   Auth/                     OAuth portalu i API, odświeżanie tokenów
   API/                      klient API 2.0 i parsery (port LibrusApi*.kt)
   Synergia/                 sesja Synergii i wiadomości (scraping HTML)
-scripts/build-ipa.sh        niepodpisany .ipa dla AltStore/SideStore
+scripts/build-ipa.sh        .ipa dla AltStore/SideStore (podpis ad hoc z App Group)
+scripts/check-widgets.sh    test logiki widgetów
 ```
 
 </details>
@@ -192,7 +246,9 @@ scripts/build-ipa.sh        niepodpisany .ipa dla AltStore/SideStore
 - Tokeny są w pęku kluczy (Keychain), tylko na tym urządzeniu. Pobrane dane są zapisywane z ochroną plików iOS.
 - Kod aplikacji łączy się wyłącznie z `*.librus.pl`, nie z serwerami Szkolny.eu. Strona logowania w WebView może ładować
   zasoby zewnętrzne, np. Google reCAPTCHA. Przy budowaniu Xcode pobiera z GitHuba bibliotekę SwiftSoup.
-- Opcja **Wyloguj** w zakładce Więcej usuwa tokeny i dane ucznia z telefonu.
+- Widgety dostają tylko plan, terminarz i numerek bieżącego ucznia (plik we wspólnym kontenerze aplikacji, bez haseł
+  i tokenów). Na zablokowanym ekranie i w CarPlay widać je tak jak inne widgety. Jeśli Ci to nie odpowiada, nie dodawaj ich.
+- Opcja **Wyloguj** w zakładce Więcej usuwa tokeny i dane ucznia z telefonu, także dane widgetów.
 
 ## Gdy coś nie działa
 

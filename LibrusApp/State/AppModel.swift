@@ -6,7 +6,9 @@ import Observation
 @Observable
 final class AppModel {
     private(set) var accounts: [StoredAccount] = []
-    private(set) var data: StudentData?
+    private(set) var data: StudentData? {
+        didSet { WidgetBridge.update(data, profile: currentProfile) }
+    }
     private(set) var isRefreshing = false
     var lastError: String?
 
@@ -31,6 +33,7 @@ final class AppModel {
             accounts = [DemoData.account]
             selectedProfileID = DemoData.profile.id
             data = DemoData.studentData()
+            WidgetBridge.update(data, profile: DemoData.profile)
             return
         }
         #else
@@ -41,6 +44,7 @@ final class AppModel {
         selectedProfileID = profiles.first { $0.id == saved }?.id ?? profiles.first?.id
         // Observers don't run during init.
         data = selectedProfileID.flatMap(DataCache.load)
+        WidgetBridge.update(data, profile: currentProfile)
     }
 
     var profiles: [StudentProfile] { accounts.flatMap(\.profiles) }
