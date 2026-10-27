@@ -44,6 +44,8 @@ struct RootView: View {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-WidgetGallery") {
             WidgetGalleryView()
+        } else if ProcessInfo.processInfo.arguments.contains("-CarPlayPreview") {
+            CarPlayPreviewView()
         } else {
             tabs
         }

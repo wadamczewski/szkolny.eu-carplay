@@ -30,8 +30,10 @@ Aplikacja korzysta z tych samych mechanizmów co oryginał. **Może przestać dz
 Kod źródłowy oryginału pochodzi z lutego 2025 r.
 
 To wersja aplikacji [Dziennik na iOS](https://github.com/wadamczewski/szkolny.eu-iOS) rozszerzona o widgety, które
-pokazują się na ekranie samochodu przez CarPlay. Wersje na telewizory: [LG webOS](https://github.com/wadamczewski/szkolny.eu-webos)
-i [Android TV](https://github.com/wadamczewski/szkolny.eu-androidtv).
+pokazują się na ekranie samochodu przez CarPlay.
+
+Inne wersje: [iOS](https://github.com/wadamczewski/szkolny.eu-iOS), [Android Auto](https://github.com/wadamczewski/szkolny.eu-androidauto),
+[LG webOS](https://github.com/wadamczewski/szkolny.eu-webos), [Android TV](https://github.com/wadamczewski/szkolny.eu-androidtv).
 
 > [!NOTE]
 > **Stan weryfikacji.** Aplikacja (bez widgetów) sprawdzona na prawdziwym koncie w symulatorze (Xcode 27.1): logowanie
@@ -53,8 +55,14 @@ bez uprawnienia i bez aplikacji CarPlay. Dziennik ma trzy takie widgety:
 | **Szczęśliwy numerek** | numerek na dziś lub najbliższy dzień |
 | **Terminarz** | najbliższy sprawdzian, kartkówkę lub wydarzenie i ile jest ich jeszcze w tygodniu |
 
-**Zrzuty ekranu:** jeszcze ich nie ma. Pojawią się tu zrzuty z prawdziwego ekranu CarPlay w aucie. Zrzutów z iPhone'a
-celowo tu nie ma, bo CarPlay ma inny format ekranu i inny sposób prezentacji.
+<p align="center">
+  <img src="docs/carplay/widgety-carplay.png" width="800" alt="Trzy widgety Dziennika na ciemnym tle o rozmiarze ekranu CarPlay">
+</p>
+
+**To nie jest zrzut z auta.** To prawdziwe widoki widgetów z aplikacji, wyrenderowane w trybie ciemnym na tle
+o rozmiarze typowego ekranu CarPlay (800×480 pt), na fikcyjnych danych, o 10:05. Bez elementów interfejsu CarPlay:
+w aucie układ widgetów i ramka wokół nich zależą od systemu i ekranu. Zrzuty z prawdziwego CarPlay pojawią się tu,
+gdy będą. Obraz tworzy `scripts/carplay-preview.sh` (wymaga uruchomionego symulatora iOS).
 
 **Jak włączyć:** zainstaluj aplikację, zaloguj się i otwórz ją raz. Na iPhonie z iOS 26+: **Ustawienia → Ogólne →
 CarPlay →** Twoje auto **→ Widgety** i dodaj widgety Dziennika. W aucie widgety są na lewo od ekranu głównego CarPlay
@@ -212,6 +220,7 @@ Packages/LibrusKit/         logika niezależna od UI
   Synergia/                 sesja Synergii i wiadomości (scraping HTML)
 scripts/build-ipa.sh        .ipa dla AltStore/SideStore (podpis ad hoc z App Group)
 scripts/check-widgets.sh    test logiki widgetów
+scripts/carplay-preview.sh  podgląd widgetów w rozmiarze ekranu CarPlay (docs/carplay/)
 ```
 
 </details>
