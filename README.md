@@ -37,8 +37,8 @@ i [Android TV](https://github.com/wadamczewski/szkolny.eu-androidtv).
 > **Stan weryfikacji.** Aplikacja (bez widgetów) sprawdzona na prawdziwym koncie w symulatorze (Xcode 27.1): logowanie
 > loginem Synergii, Start, oceny, plan lekcji, wiadomości i zakładka Więcej. Widgety: build w symulatorze, wspólne dane
 > aplikacji i widgetów (App Group), logika na fikcyjnych danych (`scripts/check-widgets.sh`, 10/10) i wygląd w galerii.
-> **Nie sprawdzone:** widgety na prawdziwym ekranie CarPlay (Xcode 27 nie ma już symulatora CarPlay w aplikacji
-> Simulator), instalacja na fizycznym urządzeniu, logowanie Kontem Librus do końca, wysyłanie wiadomości.
+> **Nie sprawdzone:** widgety na prawdziwym ekranie CarPlay (w Xcode 27 DeviceHub nie pozwala podłączyć ekranu CarPlay
+> do symulatora), instalacja na fizycznym urządzeniu, logowanie Kontem Librus do końca, wysyłanie wiadomości.
 
 ## CarPlay
 
@@ -53,7 +53,8 @@ bez uprawnienia i bez aplikacji CarPlay. Dziennik ma trzy takie widgety:
 | **Szczęśliwy numerek** | numerek na dziś lub najbliższy dzień |
 | **Terminarz** | najbliższy sprawdzian, kartkówkę lub wydarzenie i ile jest ich jeszcze w tygodniu |
 
-<p align="center"><img src="docs/screenshots/widgety.png" width="720" alt="Widgety Dziennika w jasnym i ciemnym wyglądzie (dane fikcyjne)"></p>
+**Zrzuty ekranu:** jeszcze ich nie ma. Pojawią się tu zrzuty z prawdziwego ekranu CarPlay w aucie. Zrzutów z iPhone'a
+celowo tu nie ma, bo CarPlay ma inny format ekranu i inny sposób prezentacji.
 
 **Jak włączyć:** zainstaluj aplikację, zaloguj się i otwórz ją raz. Na iPhonie z iOS 26+: **Ustawienia → Ogólne →
 CarPlay →** Twoje auto **→ Widgety** i dodaj widgety Dziennika. W aucie widgety są na lewo od ekranu głównego CarPlay
@@ -90,27 +91,6 @@ Librus Synergia. Jedno Konto Librus może mieć kilka kont uczniowskich i łatwo
 
 Czego (jeszcze) nie ma, a jest w oryginale: powiadomienia, zadania domowe, oceny
 zachowania, opisowe i punktowe, własne wydarzenia, załączniki w wysyłanych wiadomościach, inne e-dzienniki niż Librus.
-
-### Zrzuty ekranu
-
-> Zrzuty przedstawiają **fikcyjne, wygenerowane dane** z wbudowanego trybu demo. Nie pokazują żadnego prawdziwego
-> ucznia, nauczyciela ani szkoły.
-
-<p align="center">
-  <img src="docs/screenshots/01-start.png" width="240" alt="Ekran Start: szczęśliwy numerek i plan na dziś">
-  <img src="docs/screenshots/02-oceny.png" width="240" alt="Oceny ze średnimi">
-  <img src="docs/screenshots/03-przedmiot.png" width="240" alt="Szczegóły ocen z przedmiotu z poprawą">
-</p>
-<p align="center">
-  <img src="docs/screenshots/04-plan.png" width="240" alt="Plan lekcji z nawigacją po tygodniach">
-  <img src="docs/screenshots/05-wiadomosci.png" width="240" alt="Lista wiadomości">
-  <img src="docs/screenshots/06-wiadomosc.png" width="240" alt="Wiadomość z załącznikiem">
-</p>
-<p align="center">
-  <img src="docs/screenshots/07-wiecej.png" width="240" alt="Zakładka Więcej">
-  <img src="docs/screenshots/08-frekwencja.png" width="240" alt="Frekwencja ze statystyką">
-  <img src="docs/screenshots/09-start-ciemny.png" width="240" alt="Ekran Start w trybie ciemnym">
-</p>
 
 ### Pobieranie
 
