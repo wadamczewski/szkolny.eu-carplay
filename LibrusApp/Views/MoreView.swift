@@ -85,7 +85,7 @@ struct AttendanceView: View {
                 HStack {
                     Text("Obecność")
                     Spacer()
-                    Text(lessons > 0 ? String(format: "%.1f%%", percent) : "—").font(.headline)
+                    Text(lessons > 0 ? String(format: "%.1f%%", percent).replacingOccurrences(of: ".", with: ",") : "—").font(.headline)
                 }
                 HStack {
                     Text("Nieobecności (w tym uspr.)")

@@ -58,6 +58,27 @@ Librus Synergia. Jedno Konto Librus może mieć kilka kont uczniowskich i łatwo
 Czego (jeszcze) nie ma, a jest w oryginale: powiadomienia, widgety, synchronizacja w tle, zadania domowe, oceny
 zachowania, opisowe i punktowe, własne wydarzenia, załączniki w wysyłanych wiadomościach, inne e-dzienniki niż Librus.
 
+### Zrzuty ekranu
+
+> Zrzuty przedstawiają **fikcyjne, wygenerowane dane** z wbudowanego trybu demo. Nie pokazują żadnego prawdziwego
+> ucznia, nauczyciela ani szkoły.
+
+<p align="center">
+  <img src="docs/screenshots/01-start.png" width="240" alt="Ekran Start: szczęśliwy numerek i plan na dziś">
+  <img src="docs/screenshots/02-oceny.png" width="240" alt="Oceny ze średnimi">
+  <img src="docs/screenshots/03-przedmiot.png" width="240" alt="Szczegóły ocen z przedmiotu z poprawą">
+</p>
+<p align="center">
+  <img src="docs/screenshots/04-plan.png" width="240" alt="Plan lekcji z nawigacją po tygodniach">
+  <img src="docs/screenshots/05-wiadomosci.png" width="240" alt="Lista wiadomości">
+  <img src="docs/screenshots/06-wiadomosc.png" width="240" alt="Wiadomość z załącznikiem">
+</p>
+<p align="center">
+  <img src="docs/screenshots/07-wiecej.png" width="240" alt="Zakładka Więcej">
+  <img src="docs/screenshots/08-frekwencja.png" width="240" alt="Frekwencja ze statystyką">
+  <img src="docs/screenshots/09-start-ciemny.png" width="240" alt="Ekran Start w trybie ciemnym">
+</p>
+
 ### Pobieranie
 
 Gotowych plików do pobrania **nie ma**. Aplikację budujesz sam i instalujesz na swoich urządzeniach jednym z trzech sposobów:
@@ -132,6 +153,13 @@ Testy działają na **fikcyjnych, wygenerowanych danych**:
 
 ```bash
 cd Packages/LibrusKit && swift run LibrusKitCheck
+```
+
+Tryb demo z fikcyjnymi danymi (do zrzutów ekranu i pracy nad wyglądem, tylko w wersji Debug): w Xcode
+Product → Scheme → Edit Scheme → Run → Arguments dodaj `-DemoData`. Albo uruchom w symulatorze:
+
+```bash
+xcrun simctl launch booted pl.prywatny.dziennik.app -DemoData
 ```
 
 <details>

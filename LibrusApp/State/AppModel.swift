@@ -12,6 +12,7 @@ final class AppModel {
 
     var selectedProfileID: String? {
         didSet {
+            guard !isDemo else { return }
             UserDefaults.standard.set(selectedProfileID, forKey: "selectedProfileID")
             data = selectedProfileID.flatMap(DataCache.load)
         }
@@ -20,7 +21,21 @@ final class AppModel {
     @ObservationIgnored private var sessions: [UUID: AccountSession] = [:]
     @ObservationIgnored private var clients: [String: StudentClient] = [:]
 
+    /// Fake data for screenshots (Debug builds, `-DemoData` launch argument).
+    let isDemo: Bool
+
     init() {
+        #if DEBUG
+        isDemo = DemoData.isEnabled
+        if isDemo {
+            accounts = [DemoData.account]
+            selectedProfileID = DemoData.profile.id
+            data = DemoData.studentData()
+            return
+        }
+        #else
+        isDemo = false
+        #endif
         accounts = KeychainStore.loadAccounts()
         let saved = UserDefaults.standard.string(forKey: "selectedProfileID")
         selectedProfileID = profiles.first { $0.id == saved }?.id ?? profiles.first?.id
@@ -109,6 +124,9 @@ final class AppModel {
     // MARK: Data
 
     func refresh() async {
+        #if DEBUG
+        if isDemo { data = DemoData.studentData(); return }
+        #endif
         guard let client = currentClient, !isRefreshing else { return }
         isRefreshing = true
         defer { isRefreshing = false }
@@ -128,6 +146,13 @@ final class AppModel {
     }
 
     func timetable(week: Day) async throws -> [TimetableDay] {
+        #if DEBUG
+        if isDemo {
+            let days = DemoData.timetable(week: week)
+            data?.timetable[week.string] = days
+            return days
+        }
+        #endif
         guard let client = currentClient else { throw LibrusError.notLoggedIn }
         let days = try await client.timetable(weekStart: week)
         if client.profile.id == selectedProfileID, var current = data {

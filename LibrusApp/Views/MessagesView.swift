@@ -66,6 +66,9 @@ struct MessagesView: View {
     }
 
     private func load(reset: Bool) async {
+        #if DEBUG
+        if model.isDemo { messages = DemoData.messages(folder); canLoadMore = false; return }
+        #endif
         guard let client = model.currentClient, !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
@@ -178,6 +181,9 @@ struct MessageDetailView: View {
     }
 
     private func load() async {
+        #if DEBUG
+        if model.isDemo { detail = DemoData.message(summary); return }
+        #endif
         guard let client = model.currentClient else { return }
         do {
             detail = try await client.synergia.message(id: summary.id, folder: summary.folder)
@@ -283,6 +289,9 @@ struct ComposeMessageView: View {
     }
 
     private func loadGroups() async {
+        #if DEBUG
+        if model.isDemo { groups = DemoData.recipientGroups; group = groups.first?.value ?? ""; return }
+        #endif
         guard let client = model.currentClient else { return }
         isBusy = true
         defer { isBusy = false }
@@ -295,6 +304,9 @@ struct ComposeMessageView: View {
     }
 
     private func loadRecipients(_ group: String) async {
+        #if DEBUG
+        if model.isDemo { recipients = DemoData.recipients; return }
+        #endif
         guard let client = model.currentClient, !group.isEmpty else { return }
         do {
             recipients = try await client.synergia.recipients(group: group)

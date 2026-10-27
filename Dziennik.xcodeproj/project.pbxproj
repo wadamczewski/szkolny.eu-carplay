@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1186B4BC0070A161C6334F89 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4604DB5591B8C22496A6A4E2 /* DemoData.swift */; };
 		168A23BD218A845D6AD0B897 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5AB12917F6482C5A535858 /* MessagesView.swift */; };
 		2BB31497CA22625D8DE4A02F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7EA731B37E9EC525A0B4165 /* Assets.xcassets */; };
 		4CB4A9565A532C3660602CE3 /* LibrusKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0D96139534661B8F16EA2E7C /* LibrusKit */; };
@@ -29,6 +30,7 @@
 		178073A287E7E1AF6BA4C9FC /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		22167B65CA44957555387054 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		2D878A810EDFBBD19F09B8BD /* Dziennik.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Dziennik.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4604DB5591B8C22496A6A4E2 /* DemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		4FE31CB0A0FD48E8A21777F8 /* LibrusKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LibrusKit; path = Packages/LibrusKit; sourceTree = SOURCE_ROOT; };
 		597267DAAC46D922E45235C6 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
 		5D5AB12917F6482C5A535858 /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				178073A287E7E1AF6BA4C9FC /* AppModel.swift */,
+				4604DB5591B8C22496A6A4E2 /* DemoData.swift */,
 				22167B65CA44957555387054 /* Storage.swift */,
 			);
 			path = State;
@@ -227,6 +230,7 @@
 				E6ED210828FB198DE67DD73E /* AgendaView.swift in Sources */,
 				CFD23DCF72633CC24F65681F /* AppModel.swift in Sources */,
 				715133B918376DD9C38DE43B /* Components.swift in Sources */,
+				1186B4BC0070A161C6334F89 /* DemoData.swift in Sources */,
 				9F39BBA370039C2C2334E2CC /* DziennikApp.swift in Sources */,
 				85803B91BAD5B6DBA5DF4EAD /* GradesView.swift in Sources */,
 				E0F02688EF8D3447E94CA8EA /* HomeView.swift in Sources */,
